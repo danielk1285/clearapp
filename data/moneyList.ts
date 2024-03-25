@@ -1,0 +1,1 @@
+export const moneyList = ['USD', 'EUR', 'BDT', 'INR', 'Dollar', 'Real'];

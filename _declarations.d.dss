@@ -1,0 +1,2 @@
+GOOGLE_ANDROID_CLIENT_ID = '1024747278448-db39tv3ged4qt4p3ff2ec8tmh8q3inne.apps.googleusercontent.com'
+API_URL = 'https://us-central1-testdoogie.cloudfunctions.net/api/'

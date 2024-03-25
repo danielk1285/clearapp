@@ -1,3 +1,66 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json", /* Recommended React Native TSConfig base */
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+    /* Completeness */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@screens/*": [
+        "src/screens/*"
+      ],
+      "@theme/*": [
+        "src/theme/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ],
+      "@assets/*": [
+        "assets/*"
+      ],
+      "@images/*": [
+        "assets/images/*"
+      ],
+      "@layouts/*": [
+        "src/layouts/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@routes/*": [
+        "src/routes/*"
+      ],
+      "@typedef/*": [
+        "src/types/*"
+      ],
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@sections/*": [
+        "src/sections/*"
+      ],
+      "@appData/*": [
+        "data/*"
+      ],
+      "@actionSheets/*": [
+        "src/action-sheet/*"
+      ],
+      "hoc/*": [
+        "src/hoc/*"
+      ],
+      "@store/*": [
+        "src/store/*"
+      ]
+    },
+  },
+  "include": [
+    "src",
+    "assets"
+    ]
 }
+  
+ 
+

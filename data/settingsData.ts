@@ -1,0 +1,65 @@
+export const settingsData = [
+    {
+        title: 'Edit Profile',
+        subTitle: 'Control your profile',
+        leftIcon: 'editProfile',
+        rightIcon: 'rightArrow',
+        route: 'editProfileScreen',
+    },
+    {
+        title: 'Notifications',
+        subTitle: 'Push notification',
+        leftIcon: 'notification',
+        rightIcon: 'rightArrow',
+        route: 'notificationScreen',
+    },
+    // {
+    //     title: 'Language',
+    //     subTitle: 'English (US)',
+    //     leftIcon: 'language',
+    //     rightIcon: 'rightArrow',
+    //     route: 'languageScreen',
+    // },
+    {
+        title: 'Security',
+        subTitle: 'Finger print, PIN',
+        leftIcon: 'fingerPrint',
+        rightIcon: 'rightArrow',
+        route: 'securityScreen',
+    },
+    // {
+    //     title: 'Dark Theme',
+    //     subTitle: 'Day mood',
+    //     leftIcon: 'darkTheme',
+    //     rightIcon: 'switch',
+    //     route: '',
+    // },
+    {
+        title: 'Privacy Policy',
+        subTitle: 'Condition and terms',
+        leftIcon: 'privacyPolicy',
+        rightIcon: 'rightArrow',
+        route: 'privacyPolicyScreen',
+    },
+    {
+        title: 'Help & Support',
+        subTitle: 'Call your support',
+        leftIcon: 'helpSupport',
+        rightIcon: 'rightArrow',
+        route: ''
+    },
+    // {
+    //     title: 'Contact Us',
+    //     subTitle: 'Know more details',
+    //     leftIcon: 'contactUs',
+    //     rightIcon: 'rightArrow',
+    //     route: '',
+    // },
+    {
+        title: 'Logout',
+        subTitle: 'Logout from your account',
+        leftIcon: 'logout',
+        rightIcon: 'rightArrow',
+        route: '',
+    },
+]

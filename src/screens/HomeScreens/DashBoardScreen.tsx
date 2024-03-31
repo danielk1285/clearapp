@@ -57,7 +57,6 @@ import {useGetUserActivityQuery} from '@store/apis/userActivitiesApi';
 ];
 */
 
-
 function DashBoardScreen() {
   //const [activityList, setActivityList] = useState(activityData);
   const user = useSelector(selectUser);

@@ -1,29 +1,47 @@
-import ActivityCardItem from '@components/ActivityCardItem/ActivityCardItem';
-import KeyboardAwareView from '@layouts/KeyboardAwareView/KeyboardAwareView';
-import {useRoute} from '@react-navigation/native';
-import ActivityCard from '@sections/DashBoardSectons/ActivityCard/ActivityCard';
-import {
-  IActivity,
-  IActivityCardItem,
-} from '@sections/DashBoardSectons/ActivityCard/ActivityCard.types';
-import asRoute from 'hoc/asRoute';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet} from 'react-native';
 import {VStack} from 'native-base';
-import React from 'react';
-import {useGetPaginatedUserActivityQuery} from '@store/apis/userActivitiesApi';
+import KeyboardAwareView from '@layouts/KeyboardAwareView/KeyboardAwareView';
+import asRoute from 'hoc/asRoute';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import ActivityItem from '@components/ActivityItem/ActivityItem';
+import {ActivityItemProps} from '@components/ActivityItem/ActivityItemProps';
+import {IActivityCardItem} from '@sections/DashBoardSectons/ActivityCard/ActivityCard.types';
 
 function MyActivityScreen() {
-  // const activityList = useRoute().params as IActivity[];
-  const {data: activityData, isLoading: activityIsLoading} = useGetPaginatedUserActivityQuery({ page: 1, limit: 10 });
+  const [activityData, setActivityData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  console.log(activityData, activityIsLoading);
+  useEffect(() => {
+    const fetchActivityData = async () => {
+      const uid = auth().currentUser?.uid;
+
+      const querySnapshot = await firestore()
+        .collection('activity')
+        .where('uid', '==', uid)
+        .get();
+      console.log(querySnapshot);
+      const activities = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(activities);
+      setActivityData(activities);
+      setIsLoading(false);
+    };
+
+    fetchActivityData();
+  }, []);
+
   return (
     <KeyboardAwareView>
       <VStack bg="#fff" h="full">
-        <ActivityCard
-          // title="My activity"
-          activityList={activityData?.activityData || []}
-          numberOfActivity={10}
-        />
+        <ScrollView style={styles.activityList}>
+          {activityData.map((activity: ActivityItemProps, index) => (
+            <ActivityItem key={index} {...activity} />
+          ))}
+        </ScrollView>
       </VStack>
     </KeyboardAwareView>
   );
@@ -31,6 +49,10 @@ function MyActivityScreen() {
 
 const myActivityScreen = asRoute(MyActivityScreen, 'myActivityScreen', {
   title: 'My Activity',
+});
+
+const styles = StyleSheet.create({
+  activityList: {},
 });
 
 export default myActivityScreen;

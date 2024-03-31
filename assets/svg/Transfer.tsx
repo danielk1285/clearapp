@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Rect, Path} from 'react-native-svg';
 
-function ApprovingIcon(props) {
+function TransferIcon(props) {
   return (
     <Svg
       width={40}
@@ -29,4 +29,4 @@ function ApprovingIcon(props) {
   );
 }
 
-export default ApprovingIcon;
+export default TransferIcon;

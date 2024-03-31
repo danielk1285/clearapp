@@ -72,7 +72,7 @@ const homeScreens = {
   businessDetailsStep1Screen,
   businessDetailsStep2Screen,
   businessDetailsStep3Screen,
-  myActivityScreen,
+  myActivityScreen, // Included in the homeScreens
 };
 
 const tabScreen = asRoute(BottomTabNavigator, 'tabScreen', {

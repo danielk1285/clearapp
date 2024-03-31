@@ -291,3 +291,5 @@ export const CloseIcon = (props: TIcon) => (
 export const PlusIcon = (props: TIcon) => (
   <VectorImage {...props} source={plus} />
 );
+
+export const EmptyIcon = (props: TIcon) => <></>;

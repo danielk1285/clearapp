@@ -1,10 +1,10 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {DateTime} from 'luxon';
-import ApprovingIcon from '@assets/svg/Approving';
+import TransferIcon from '@assets/svg/Transfer';
 import YouExchangedIcon from '@assets/svg/YouExchanged';
-import TransferCompleteIcon from '@assets/svg/TransferComplete';
 import {ActivityItemProps} from './ActivityItemProps';
 import {IActivityCardItem} from '@sections/DashBoardSectons/ActivityCard/ActivityCard.types';
+import WithdrawIcon from '@assets/svg/Withdraw';
 
 const ActivityItem: React.FC<ActivityItemProps> = ({
   status,
@@ -32,19 +32,15 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
   };
 
   const icon = (() => {
-    switch (status) {
-      case 'Approving':
-        return <ApprovingIcon />;
-      case 'In progress':
-        return <ApprovingIcon />;
-      case 'You Exchanged':
-        return <YouExchangedIcon />;
-      case 'Transfer Complete':
-        return <TransferCompleteIcon />;
-      case 'Complete':
-        return <TransferCompleteIcon />;
+    switch (type) {
+      case 'Transfer':
+        return <TransferIcon />;
+        case 'Exchange':
+          return <YouExchangedIcon />;
+        case 'Withdrawal':
+          return <WithdrawIcon />;
       default:
-        return <View />;
+        return <TransferIcon />;
     }
   })();
 
@@ -73,7 +69,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
       <View style={styles.activityContent}>
         <Text style={styles.sentAmount}>
           {currencySymbol}
-          {(Number(sentAmount)).toFixed(2)}
+          {Number(sentAmount).toFixed(2)}
         </Text>
         <Text style={styles.activityTime}>
           {type} | {displayTime}

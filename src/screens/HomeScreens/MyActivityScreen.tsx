@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text} from 'react-native';
-import {VStack} from 'native-base';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {HStack, VStack} from 'native-base';
 import KeyboardAwareView from '@layouts/KeyboardAwareView/KeyboardAwareView';
 import asRoute from 'hoc/asRoute';
 import firestore from '@react-native-firebase/firestore';
@@ -8,10 +8,14 @@ import auth from '@react-native-firebase/auth';
 import ActivityItem from '@components/ActivityItem/ActivityItem';
 import {ActivityItemProps} from '@components/ActivityItem/ActivityItemProps';
 import {DateTime} from 'luxon';
+import {HomeFillIcon, ProfileIcon, WalletIcon} from '@assets/svg/icons';
+import useNavigate from '@hooks/useNavigate';
+import { TUserRoutes } from '@routes/UserRoutes/User.routes';
 
 function MyActivityScreen() {
   const [activityData, setActivityData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const sortedActivities = activityData.sort((a, b) => {
     return (
@@ -41,17 +45,35 @@ function MyActivityScreen() {
     fetchActivityData();
   }, []);
 
+  const bottomIcons = [
+    {Icon: HomeFillIcon, title: 'Home', path: 'dashBoardScreen'},
+    {Icon: WalletIcon, title: 'Wallet', path: 'myWalletScreen'},
+    {Icon: ProfileIcon, title: 'Profile', path: 'profileScreen'},
+  ];
+
   return (
-    <KeyboardAwareView>
-      <VStack bg="#fff" h="full">
-        <Text style={styles.headerTitle}>My activity</Text>
-        <ScrollView style={styles.activityList}>
-          {sortedActivities.map((activity: ActivityItemProps, index) => (
-            <ActivityItem key={index} {...activity} />
-          ))}
-        </ScrollView>
-      </VStack>
-    </KeyboardAwareView>
+    <>
+      <KeyboardAwareView>
+        <VStack bg="#fff" h="full">
+          <Text style={styles.headerTitle}>My activity</Text>
+          <ScrollView style={styles.activityList}>
+            {sortedActivities.map((activity: ActivityItemProps, index) => (
+              <ActivityItem key={index} {...activity} />
+            ))}
+          </ScrollView>
+        </VStack>
+      </KeyboardAwareView>
+      <View style={styles.tabBar}>
+        {bottomIcons.map((item, index) => (
+          <TouchableOpacity key={index} style={styles.tabButton} onPress={
+            () => navigate(item.path as TUserRoutes)
+          }>
+            {item.Icon && <item.Icon style={styles.tabIcon} />}
+            <Text style={styles.tabTitle}>{item.title}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </>
   );
 }
 
@@ -67,6 +89,27 @@ const styles = StyleSheet.create({
     lineHeight: 19.09,
     marginLeft: 15,
     marginTop: 15,
+  },
+  tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: 60,
+    width: '100%',
+    backgroundColor: '#fff',
+  },
+  tabButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tabIcon: {
+    tintColor: '#3A41FE',
+    height: 20,
+    width: 20,
+  },
+  tabTitle: {
+    color: '#3A41FE',
   },
 });
 

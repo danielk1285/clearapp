@@ -17,8 +17,10 @@ export default function RenderBottomTabs({
 }: IBottomTabComponent) {
   let Icon = null;
   let title = '';
+
   switch (routeName) {
     case 'dashBoardScreen':
+    case 'myActivityScreen':
       Icon = focused ? HomeFillIcon : HomeIcon;
       title = 'Home';
       break;
@@ -36,7 +38,7 @@ export default function RenderBottomTabs({
 
   return (
     <VStack justifyContent={'center'} alignItems={'center'} space="1">
-      <Icon style={styles.tabIcon} />
+      {Icon && <Icon style={styles.tabIcon} />}
       <Text color={'#3A41FE'}>{title}</Text>
     </VStack>
   );

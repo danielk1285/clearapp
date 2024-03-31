@@ -1,5 +1,5 @@
 import Header from '@layouts/Header/Header';
-import {dashBoardScreen} from '@screens/HomeScreens';
+import {dashBoardScreen, myActivityScreen} from '@screens/HomeScreens';
 import {profileScreen} from '@screens/ProfileScreens';
 import {myWalletScreen} from '@screens/WalletScreens';
 import {IReactNavigationRouteConfig} from '@typedef/route.types';

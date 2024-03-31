@@ -4,11 +4,27 @@ import React from 'react';
 import colors from '@theme/colors';
 import {IActivityCardItem} from '@sections/DashBoardSectons/ActivityCard/ActivityCard.types';
 import moment from 'moment';
+import TransferIcon from '@assets/svg/Transfer';
+import YouExchangedIcon from '@assets/svg/YouExchanged';
+import WithdrawIcon from '@assets/svg/Withdraw';
 
 export default function ActivityCardItem({
   activity,
   ...rest
-}: IActivityCardItem) {
+}: any) {
+  console.log('activity', activity);
+  const icon = (() => {
+    switch (activity.type) {
+      case 'Transfer':
+        return <TransferIcon />;
+      case 'Exchange':
+        return <YouExchangedIcon />;
+      case 'Withdrawal':
+        return <WithdrawIcon />;
+      default:
+        return <TransferIcon />;
+    }
+  })();
   return (
     <HStack
       alignItems="center"
@@ -20,6 +36,7 @@ export default function ActivityCardItem({
       borderRadius="8px">
       <HStack alignItems="center">
         {/* <CardInfo mb="0px" icon={activity.icon} bg="#ffffff" /> */}
+        {icon}
         <VStack ml="10px" space={2} pb="2px">
           <Text
             fontWeight={700}
@@ -28,9 +45,11 @@ export default function ActivityCardItem({
             }>
             {activity.status}
           </Text>
-          <Text fontSize="xs" color={colors.gray[0]}>
-            {moment(activity.date).fromNow()}
-          </Text>
+          {moment(activity.date).isValid() && (
+            <Text fontSize="xs" color={colors.gray[0]}>
+              {moment(activity.date).fromNow()}
+            </Text>
+          )}
         </VStack>
       </HStack>
       <VStack space={2} pb="2px">

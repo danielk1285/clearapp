@@ -11,6 +11,7 @@ import auth, {firebase} from '@react-native-firebase/auth';
 import {useSelector} from 'react-redux';
 import {selectUser} from '@store/features/user';
 import {useGetUserActivityQuery} from '@store/apis/userActivitiesApi';
+import { useNavigation } from '@react-navigation/native';
 /*export const activityData = [
   {
     id: 1,
@@ -57,6 +58,7 @@ import {useGetUserActivityQuery} from '@store/apis/userActivitiesApi';
 ];
 */
 
+
 function DashBoardScreen() {
   //const [activityList, setActivityList] = useState(activityData);
   const user = useSelector(selectUser);
@@ -70,14 +72,14 @@ function DashBoardScreen() {
     userAvatar: '',
   });
 
-  const navigate = useNavigate();
+  const navigation = useNavigation();
 
   const handleAddFunds = () => {
     console.log('Handle AddFunds');
   };
 
   const handleSeeAllActivity = () => {
-    navigate('myActivityScreen');
+    navigation.navigate('myActivityScreen' as never);
   };
 
   React.useEffect(() => {

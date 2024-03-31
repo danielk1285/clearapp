@@ -61,7 +61,6 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
       case 'GBP':
         return '£';
       default:
-        // replace spaces with empty string
         return currencyOrConversion.replace(/\s/g, '')[0];
     }
   })();
@@ -72,16 +71,16 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
     <View style={styles.activityItem}>
       {icon}
       <View style={styles.activityContent}>
-        <Text style={[statusStyle]}>{status}</Text>
+        <Text style={styles.sentAmount}>
+          {currencySymbol}
+          {(Number(sentAmount)).toFixed(2)}
+        </Text>
         <Text style={styles.activityTime}>
           {type} | {displayTime}
         </Text>
       </View>
       <View>
-        <Text style={styles.sentAmount}>
-          {currencySymbol}
-          {sentAmount}
-        </Text>
+        <Text style={[statusStyle]}>{status}</Text>
       </View>
     </View>
   );

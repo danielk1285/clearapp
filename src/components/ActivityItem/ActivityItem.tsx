@@ -1,10 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {Animated, Modal, Pressable, StyleSheet, Text, View} from 'react-native';
 import {DateTime} from 'luxon';
 import TransferIcon from '@assets/svg/Transfer';
 import YouExchangedIcon from '@assets/svg/YouExchanged';
-import {ActivityItemProps} from './ActivityItemProps';
-import {IActivityCardItem} from '@sections/DashBoardSectons/ActivityCard/ActivityCard.types';
 import WithdrawIcon from '@assets/svg/Withdraw';
+import {ActivityItemProps} from './ActivityItemProps';
 
 const ActivityItem: React.FC<ActivityItemProps> = ({
   status,
@@ -14,8 +14,11 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
   type,
   currency,
   'conversion rate': conversionRate = '',
+  toggleBottomTab = () => {},
 }) => {
-  // Determine the icon and text color based on the status
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalY] = useState(new Animated.Value(300));
+
   const activityStatusColor = (() => {
     switch (statusColor) {
       case 'Orange':
@@ -26,6 +29,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
         return 'black';
     }
   })();
+
   const statusStyle = {
     ...styles.activityStatus,
     color: activityStatusColor,
@@ -35,10 +39,10 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
     switch (type) {
       case 'Transfer':
         return <TransferIcon />;
-        case 'Exchange':
-          return <YouExchangedIcon />;
-        case 'Withdrawal':
-          return <WithdrawIcon />;
+      case 'Exchange':
+        return <YouExchangedIcon />;
+      case 'Withdrawal':
+        return <WithdrawIcon />;
       default:
         return <TransferIcon />;
     }
@@ -60,8 +64,25 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
         return currencyOrConversion.replace(/\s/g, '')[0];
     }
   })();
-  console.log('currency', currency);
-  console.log('conversionRate', currencySymbol);
+
+  const showModal = () => {
+    setModalVisible(true);
+    Animated.timing(modalY, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+    toggleBottomTab();
+  };
+
+  const hideModal = () => {
+    Animated.timing(modalY, {
+      toValue: 300,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setModalVisible(false));
+    toggleBottomTab();
+  };
 
   return (
     <View style={styles.activityItem}>
@@ -77,11 +98,36 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
       </View>
       <View>
         <Text style={[statusStyle]}>{status}</Text>
+        <Pressable style={styles.detailsButton} onPress={() => showModal()}>
+          <Text>View Details</Text>
+        </Pressable>
       </View>
+
+      <Modal
+        animationType="none" // Turn off default modal animation
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={hideModal}>
+        <Pressable style={styles.modalOverlay} onPress={hideModal}>
+          <Animated.View
+            style={[styles.modalView, {transform: [{translateY: modalY}]}]}>
+            <Pressable
+              style={styles.modalContent}
+              onPress={e => e.stopPropagation()}>
+              {/* Modal content */}
+              <Text style={styles.modalText}>Activity Details</Text>
+              <Text>Status: {status}</Text>
+              <Text>Date: {dateTime}</Text>
+              <Text>Amount: {sentAmount}</Text>
+              <Text>Type: {type}</Text>
+              {conversionRate && <Text>Conversion Rate: {conversionRate.replace(/^\s+/, '')}</Text>}
+            </Pressable>
+          </Animated.View>
+        </Pressable>
+      </Modal>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -133,6 +179,43 @@ const styles = StyleSheet.create({
   },
   sentAmount: {
     fontWeight: 'bold',
+  },
+  detailsButton: {
+    marginTop: 5,
+    padding: 5,
+    borderRadius: 5,
+  },
+  modalContent: {
+    width: '100%',
+    padding: 20,
+  },
+  modalView: {
+    backgroundColor: 'white',
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    elevation: 5,
+    width: '100%',
+    borderRadius: 16,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
   },
 });
 

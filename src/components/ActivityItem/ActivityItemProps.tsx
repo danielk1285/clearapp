@@ -4,6 +4,7 @@ export type ActivityItemProps {
     icon: string;
     'date and time': string;
     'sent amount'?: string;
+    'exchange amount'?: string;
     'status color': string;
     type: string;
     'conversion rate'? : string;

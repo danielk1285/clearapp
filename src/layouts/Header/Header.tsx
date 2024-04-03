@@ -1,3 +1,4 @@
+import BackButton from '@assets/svg/BackButton';
 import {LinGrad} from '@components/FactoryComponents/FactoryComponents';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {gradient} from '@theme/colors';

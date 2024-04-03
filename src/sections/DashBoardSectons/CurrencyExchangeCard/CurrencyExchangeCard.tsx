@@ -70,7 +70,7 @@ function CurrencyExchangeCard({
           <SelectCurrencyBtn
             onPress={onPress}
             currency={currency}
-            flag={flag}
+            // flag={flag}
           />
         </HStack>
         {touched && error ? (

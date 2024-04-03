@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ClearApp</string>
+    <string name="facebook_app_id">517256677239537</string>
+    <string name="facebook_client_token">2c01bf3925893d43bc28ff549d360011</string>
 </resources>

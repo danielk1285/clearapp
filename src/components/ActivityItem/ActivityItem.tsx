@@ -5,6 +5,7 @@ import TransferIcon from '@assets/svg/Transfer';
 import YouExchangedIcon from '@assets/svg/YouExchanged';
 import WithdrawIcon from '@assets/svg/Withdraw';
 import {ActivityItemProps} from './ActivityItemProps';
+import ActivityDetailModal from './ActivityDetailModal';
 
 const ActivityItem: React.FC<ActivityItemProps> = ({
   status,
@@ -26,6 +27,8 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
         return '#FB8500';
       case 'Green':
         return '#02B134';
+      case 'Red':
+        return '#E54335';
       default:
         return 'black';
     }
@@ -93,7 +96,10 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
       <View style={styles.activityContent}>
         <Text style={styles.sentAmount}>
           {currencySymbol}
-          {Number(sentAmount).toFixed(2)}
+          {Number(sentAmount).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </Text>
         <Text style={styles.activityTime}>
           {type} | {displayTime}
@@ -105,8 +111,22 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
           <Text>View Details</Text>
         </Pressable>
       </View>
-
-      <Modal
+      <ActivityDetailModal
+        modalVisible={modalVisible}
+        hideModal={hideModal}
+        modalY={modalY}
+        type={type}
+        status={status}
+        statusStyle={statusStyle}
+        icon={icon}
+        sentAmount={sentAmount}
+        exchangeAmount={exchangeAmount}
+        dateTime={dateTime}
+        conversionRate={conversionRate}
+        currencySymbols={currencySymbols}
+        currencySymbol={currencySymbol}
+      />
+      {/* <Modal
         animationType="none" // Turn off default modal animation
         transparent={true}
         visible={modalVisible}
@@ -133,7 +153,10 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
                     <Text style={styles.detailLabel}>Sent Amount:</Text>
                     <Text style={[styles.detailValue, styles.fontBold]}>
                       {currencySymbols?.[0] || currencySymbol}
-                      {Number(sentAmount).toFixed(2)}
+                      {Number(sentAmount).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </Text>
                   </View>
                 )}
@@ -144,7 +167,10 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
                     </Text>
                     <Text style={[styles.detailValue, styles.fontBold]}>
                       {currencySymbols?.[1]}
-                      {Number(exchangeAmount).toFixed(2)}
+                      {Number(exchangeAmount).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </Text>
                   </View>
                 )}
@@ -174,7 +200,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
             </Pressable>
           </Animated.View>
         </Pressable>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };

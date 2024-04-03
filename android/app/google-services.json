@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "1024747278448",
+    "project_id": "testdoogie",
+    "storage_bucket": "testdoogie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024747278448:android:8c24239314e31c4171a4b5",
+        "android_client_info": {
+          "package_name": "com.clearapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024747278448-qkbu0fo9qoq1kkgkuvd6ohafhfr4eipq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clearapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1024747278448-db39tv3ged4qt4p3ff2ec8tmh8q3inne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC04fnjpCQJM745qXxM2iDFXDlTAl0juRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024747278448-db39tv3ged4qt4p3ff2ec8tmh8q3inne.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1024747278448-2kfpd9pi1c2matcaq07g6mprobf57jok.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.com.ClearApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024747278448:android:9353b50cdd145e8571a4b5",
+        "android_client_info": {
+          "package_name": "com.doogy.transfer.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024747278448-4a1mego7uqb1ufa7idqairpi7cf56qk3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.doogy.transfer.app",
+            "certificate_hash": "3c1bf670dcf17bd33b54eacc68f89df7786c09ef"
+          }
+        },
+        {
+          "client_id": "1024747278448-eempghfaboofihlhl51e7cms20mvdr4j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.doogy.transfer.app",
+            "certificate_hash": "ebfd308daef44b56af7166d0cef978fc0ec2191b"
+          }
+        },
+        {
+          "client_id": "1024747278448-hsegbd9qfpfnftk248ddcs7jtj7mkm0r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.doogy.transfer.app",
+            "certificate_hash": "92487e51fe263374cf3f9af7d4e94336cfac4441"
+          }
+        },
+        {
+          "client_id": "1024747278448-qtbtinnkbremuklv911qtfm1vbd6kokr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.doogy.transfer.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1024747278448-db39tv3ged4qt4p3ff2ec8tmh8q3inne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC04fnjpCQJM745qXxM2iDFXDlTAl0juRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024747278448-db39tv3ged4qt4p3ff2ec8tmh8q3inne.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1024747278448-2kfpd9pi1c2matcaq07g6mprobf57jok.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.com.ClearApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

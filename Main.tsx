@@ -27,8 +27,9 @@ export default function Main() {
   useEffect(() => {
     GoogleSignin.configure({
       // webClientId: Config.GOOGLE_ANDROID_CLIENT_ID,
-      webClientId:
-        '1024747278448-2kfpd9pi1c2matcaq07g6mprobf57jok.apps.googleusercontent.com',
+      webClientId: '1024747278448-db39tv3ged4qt4p3ff2ec8tmh8q3inne.apps.googleusercontent.com'
+        // '1024747278448-2kfpd9pi1c2matcaq07g6mprobf57jok.apps.googleusercontent.com',
+
     });
   }, []);
 

@@ -63,7 +63,6 @@ function DashBoardScreen() {
   //const [activityList, setActivityList] = useState(activityData);
   const user = useSelector(selectUser);
   const {data: activityData, isLoading: activityIsLoading} = useGetUserActivityQuery(undefined);
-
   console.log(activityData, activityIsLoading);
 
   const [currentUser, setCurrentUser] = useState({

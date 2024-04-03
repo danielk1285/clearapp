@@ -13,7 +13,8 @@ const transformData = (doc) => {
     status: doc.status,
     date: new Date(doc.date),
     icon: doc.icon,
-    amount: doc["sent amount"] + " " + doc.currency
+    amount: doc["sent amount"] + " " + doc.currency,
+    ...doc,
   };
 }
 export const userActivitiesApi = apiSlice.injectEndpoints({

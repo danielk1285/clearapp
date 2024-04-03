@@ -17,6 +17,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
   currency,
   'conversion rate': conversionRate = '',
   toggleBottomTab = () => {},
+  Bank: bank ='',
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalY] = useState(new Animated.Value(300));
@@ -125,6 +126,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({
         conversionRate={conversionRate}
         currencySymbols={currencySymbols}
         currencySymbol={currencySymbol}
+        Bank={bank}
       />
       {/* <Modal
         animationType="none" // Turn off default modal animation

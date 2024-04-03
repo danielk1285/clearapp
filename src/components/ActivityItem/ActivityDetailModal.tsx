@@ -17,8 +17,9 @@ const ActivityDetailModal = ({
   conversionRate,
   currencySymbols,
   currencySymbol,
+  Bank
 }) => {
-  console.log('currencySymbols', currencySymbols);
+  console.log('Bank modal', Bank);
   return (
     <Modal
       animationType="none"
@@ -84,6 +85,16 @@ const ActivityDetailModal = ({
                   </Text>
                 </View>
               )}
+              {
+                Bank && (
+                  <View style={styles.detailItem}>
+                    <Text style={styles.detailLabel}>Bank:</Text>
+                    <Text style={styles.detailValue}>
+                      {Bank}
+                    </Text>
+                  </View>
+                )
+              }
               <Text style={styles.customerSupport}>
                 Need Help?{' '}
                 <Text style={styles.contactSupport}>Contact Support</Text>

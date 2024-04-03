@@ -10,4 +10,5 @@ export type ActivityItemProps {
     'conversion rate'? : string;
     currency?: string;
     toggleBottomTab: () => void;
+    Bank?: string;
 }

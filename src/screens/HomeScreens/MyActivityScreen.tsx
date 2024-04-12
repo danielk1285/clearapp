@@ -23,13 +23,17 @@ function MyActivityScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const [hideBottomTab, setHideBottomTab] = useState(false);
   const navigate = useNavigate();
-
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 8;
   const sortedActivities = activityData.sort((a, b) => {
     return (
       DateTime.fromISO(b['date and time']).toMillis() -
       DateTime.fromISO(a['date and time']).toMillis()
     );
   });
+  const endIndex = (currentPage + 1) * itemsPerPage;
+  const startIndex = currentPage * itemsPerPage;
+  const currentActivities = sortedActivities.slice(startIndex, endIndex);
 
   useEffect(() => {
     const fetchActivityData = async () => {
@@ -61,13 +65,26 @@ function MyActivityScreen() {
     {Icon: ProfileIcon, title: 'Profile', path: 'profileScreen'},
   ];
 
+  const handleNext = () => {
+    const totalPages = Math.ceil(sortedActivities.length / itemsPerPage);
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <>
       <KeyboardAwareView style={styles.container}>
         <VStack bg="#fff" h="full">
           <Text style={styles.headerTitle}>My activity</Text>
           <ScrollView style={styles.activityList}>
-            {sortedActivities.map((activity: ActivityItemProps, index) => (
+            {currentActivities.map((activity: ActivityItemProps, index) => (
               <ActivityItem
                 key={index}
                 {...activity}
@@ -75,6 +92,32 @@ function MyActivityScreen() {
               />
             ))}
           </ScrollView>
+          <View style={styles.paginationControls}>
+            <TouchableOpacity
+              onPress={handlePrev}
+              style={[
+                styles.paginationButton,
+                currentPage === 0 && styles.disabledButton,
+              ]}
+              disabled={currentPage === 0}>
+              <Text style={styles.paginationText}>{'<'}</Text>
+            </TouchableOpacity>
+            <Text style={styles.pageIndicator}>Page {currentPage + 1}</Text>
+            <TouchableOpacity
+              onPress={handleNext}
+              style={[
+                styles.paginationButton,
+                currentPage >=
+                  Math.ceil(sortedActivities.length / itemsPerPage) - 1 &&
+                  styles.disabledButton,
+              ]}
+              disabled={
+                currentPage >=
+                Math.ceil(sortedActivities.length / itemsPerPage) - 1
+              }>
+              <Text style={styles.paginationText}>{'>'}</Text>
+            </TouchableOpacity>
+          </View>
         </VStack>
       </KeyboardAwareView>
       {/* This is necessary due to how messy the bottom tab navigation was implemented... */}
@@ -132,6 +175,29 @@ const styles = StyleSheet.create({
   },
   tabTitle: {
     color: '#3A41FE',
+  },
+  paginationControls: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  paginationButton: {
+    padding: 10,
+    marginHorizontal: 20,
+    backgroundColor: '#3A41FE', // Use your app's theme color
+    borderRadius: 5,
+  },
+  paginationText: {
+    color: '#FFFFFF', // Text color for buttons
+  },
+  pageIndicator: {
+    fontSize: 16,
+    color: '#000000', // Text color for the page number
+  },
+  disabledButton: {
+    backgroundColor: '#CCCCCC', // Disabled button color
   },
 });
 

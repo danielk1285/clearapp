@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  NativeScrollEvent,
   ScrollView,
   StyleSheet,
   Text,
@@ -22,9 +23,10 @@ function MyActivityScreen() {
   const [activityData, setActivityData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hideBottomTab, setHideBottomTab] = useState(false);
+  const [displayCount, setDisplayCount] = useState(10); // Initial number of items to display
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
   const sortedActivities = activityData.sort((a, b) => {
     return (
       DateTime.fromISO(b['date and time']).toMillis() -
@@ -47,6 +49,7 @@ function MyActivityScreen() {
         id: doc.id,
         ...doc.data(),
       }));
+
       setActivityData(activities);
       setIsLoading(false);
     };
@@ -65,60 +68,47 @@ function MyActivityScreen() {
     {Icon: ProfileIcon, title: 'Profile', path: 'profileScreen'},
   ];
 
-  const handleNext = () => {
-    const totalPages = Math.ceil(sortedActivities.length / itemsPerPage);
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-    }
+  const handleLoadMore = () => {
+    setDisplayCount(prevCount => prevCount + itemsPerPage);
   };
 
-  const handlePrev = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
+  const handleScroll = ({nativeEvent}: any) => {
+    console.log('nativeEvent', nativeEvent);
+    const isCloseToBottom =
+      nativeEvent.layoutMeasurement.height + nativeEvent.contentOffset.y >=
+      nativeEvent.contentSize.height - 50;
+    console.log('isCloseToBottom', isCloseToBottom);
+    if (isCloseToBottom) {
+      handleLoadMore();
     }
   };
 
   return (
     <>
       <KeyboardAwareView style={styles.container}>
-        <VStack bg="#fff" h="full">
-          <Text style={styles.headerTitle}>My activity</Text>
-          <ScrollView style={styles.activityList}>
-            {currentActivities.map((activity: ActivityItemProps, index) => (
+        {/* <VStack bg="#fff" h="full"> */}
+        <Text style={styles.headerTitle}>My activity</Text>
+        <Text>
+          {displayCount} {}
+        </Text>
+        <ScrollView
+          // style={styles.activityList}
+          onScroll={handleScroll}
+          onScrollBeginDrag={() => console.log('onScrollBeginDrag')}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={true}
+          style={{flex: 1, height: 300}}>
+          {sortedActivities
+            .slice(0, displayCount)
+            .map((activity: ActivityItemProps, index) => (
               <ActivityItem
                 key={index}
                 {...activity}
                 toggleBottomTab={toggleBottomTab}
               />
             ))}
-          </ScrollView>
-          <View style={styles.paginationControls}>
-            <TouchableOpacity
-              onPress={handlePrev}
-              style={[
-                styles.paginationButton,
-                currentPage === 0 && styles.disabledButton,
-              ]}
-              disabled={currentPage === 0}>
-              <Text style={styles.paginationText}>{'<'}</Text>
-            </TouchableOpacity>
-            <Text style={styles.pageIndicator}>Page {currentPage + 1}</Text>
-            <TouchableOpacity
-              onPress={handleNext}
-              style={[
-                styles.paginationButton,
-                currentPage >=
-                  Math.ceil(sortedActivities.length / itemsPerPage) - 1 &&
-                  styles.disabledButton,
-              ]}
-              disabled={
-                currentPage >=
-                Math.ceil(sortedActivities.length / itemsPerPage) - 1
-              }>
-              <Text style={styles.paginationText}>{'>'}</Text>
-            </TouchableOpacity>
-          </View>
-        </VStack>
+        </ScrollView>
+        {/* </VStack> */}
       </KeyboardAwareView>
       {/* This is necessary due to how messy the bottom tab navigation was implemented... */}
       {!hideBottomTab && (
@@ -143,8 +133,10 @@ const myActivityScreen = asRoute(MyActivityScreen, 'myActivityScreen', {
 });
 
 const styles = StyleSheet.create({
-  activityList: {},
+  activityList: {
+  },
   container: {
+    flex: 1,
     flexGrow: 1,
     backgroundColor: '#F7F7F7',
   },

@@ -65,7 +65,7 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B33312C92B888E9B0040B0DF"
+               BlueprintIdentifier = "B351B4B12B888D9600CBEF8F"
                BuildableName = "ClearAppTests.xctest"
                BlueprintName = "ClearAppTests"
                ReferencedContainer = "container:ClearApp.xcodeproj">
@@ -74,7 +74,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"

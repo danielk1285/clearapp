@@ -10,6 +10,7 @@ import {Pressable, Skeleton, Text, VStack} from 'native-base';
 import React from 'react';
 import Entopy from 'react-native-vector-icons/Entypo';
 import {Alert} from 'react-native';
+import {DateTime} from 'luxon';
 
 import useNavigate from '@hooks/useNavigate';
 import {useNavigation} from '@react-navigation/native';
@@ -31,6 +32,7 @@ import {SheetManager} from 'react-native-actions-sheet';
 import {useLazyHasSufficientFundsQuery} from '@store/apis/walletsApi';
 import LoaderModal from '@layouts/LoaderModal.tsx/LoaderModal';
 import {useGetUserActivityQuery} from '@store/apis/userActivitiesApi';
+import moment from 'moment';
 
 export const activityData1 = [
   {
@@ -77,7 +79,6 @@ export const activityData1 = [
   },
 ];
 
-
 interface IInitialValues {
   firstCurrency: string;
   secondCurrency: string;
@@ -104,8 +105,10 @@ const StartExchange = () => {
 
   const dispatch = useDispatch();
 
-  const {data: conversionData, isLoading: conversionIsLoading} = useGetConversionRatesQuery(undefined);
-  const {data: activityData, isLoading: activityIsLoading} = useGetUserActivityQuery(undefined);
+  const {data: conversionData, isLoading: conversionIsLoading} =
+    useGetConversionRatesQuery(undefined);
+  const {data: activityData, isLoading: activityIsLoading} =
+    useGetUserActivityQuery(undefined);
 
   const navigate = useNavigate();
 
@@ -130,7 +133,6 @@ const StartExchange = () => {
       .min(1, 'Currency must be greater than 0'),
   });
 
-
   const initialValues: IInitialValues = {
     firstCurrency: '',
     secondCurrency: '',
@@ -139,24 +141,29 @@ const StartExchange = () => {
   const formik = useFormik({
     initialValues,
     onSubmit: async value => {
-       const transferData: IExchangeRequest = {
+      const transferData: IExchangeRequest = {
         currencyFrom: firstCurrency?.currencyCode as any,
         currencyTo: secondCurrency?.currencyCode as any,
-        amountToSend: Number(parseFloat(value?.firstCurrency?.replace(/,/g, ""))),
-        amountConverted: Number(parseFloat(value?.secondCurrency?.replace(/,/g, ""))),
-        amountReceived: Number(parseFloat(value?.secondCurrency?.replace(/,/g, ""))),
-        conversionRate: Number(firstCurrency?.conversionRates[secondCurrency?.currencyCode?.toLowerCase()]?.toFixed(2)), // Add conversion rate here
+        amountToSend: Number(
+          parseFloat(value?.firstCurrency?.replace(/,/g, '')),
+        ),
+        amountConverted: Number(
+          parseFloat(value?.secondCurrency?.replace(/,/g, '')),
+        ),
+        amountReceived: Number(
+          parseFloat(value?.secondCurrency?.replace(/,/g, '')),
+        ),
+        conversionRate: Number(
+          firstCurrency?.conversionRates[
+            secondCurrency?.currencyCode?.toLowerCase()
+          ]?.toFixed(2),
+        ), // Add conversion rate here
         action: 'Exchange',
       };
 
-
-
-
-
-      
       const hasSufficientFund = await checkHasSufficientFund({
         fromCurrency: firstCurrency?.currencyCode as any,
-        fromAmount: Number(parseFloat(value.firstCurrency.replace(/,/g, ""))),
+        fromAmount: Number(parseFloat(value.firstCurrency.replace(/,/g, ''))),
       }).unwrap();
 
       console.log('hasSufficientFund', hasSufficientFund);
@@ -174,26 +181,30 @@ const StartExchange = () => {
       } else {
         Alert.alert(
           'Insufficient Funds',
-          'Please add funds to complete the transaction', [
+          'Please add funds to complete the transaction',
+          [
             {
               text: 'Cancel',
               onPress: () => console.log('Cancel Pressed'),
               style: 'cancel',
             },
-            {text: 'Add Funds', onPress: () => {
-              if (!hasViewedTutorial) {
-                dispatch(setHasViewedTutorials(true));
-                navigate('transferSourceScreen', {
-                  type: 'addFunds',
-                });
-              } else {
-                navigate('detailsScreen', {
-                  type: 'addFunds',
-                });
-              }
-            }
-          },
-          ] );
+            {
+              text: 'Add Funds',
+              onPress: () => {
+                if (!hasViewedTutorial) {
+                  dispatch(setHasViewedTutorials(true));
+                  navigate('transferSourceScreen', {
+                    type: 'addFunds',
+                  });
+                } else {
+                  navigate('detailsScreen', {
+                    type: 'addFunds',
+                  });
+                }
+              },
+            },
+          ],
+        );
       }
     },
     validationSchema,
@@ -211,7 +222,7 @@ const StartExchange = () => {
   );
 
   const onFirstCurrencyChange = React.useCallback(
-  (value: string) => {
+    (value: string) => {
       if (secondCurrency?.currencyCode && firstCurrency?.currencyCode) {
         const secondCurrencyConversionRates =
           secondCurrency?.conversionRates[
@@ -230,7 +241,7 @@ const StartExchange = () => {
       }
 
       setFieldValue('firstCurrency', value.split(',').join(''));
-    }, 
+    },
     [firstCurrency, secondCurrency, setFieldValue, calculateCurrency],
   );
 
@@ -256,8 +267,14 @@ const StartExchange = () => {
   );
 
   React.useEffect(() => {
-    console.log("index.tsx Running effect, here is the conversion data: ", conversionData);
-    console.log("index.tsx Running  effect, here is the activity data: ", activityData);
+    console.log(
+      'index.tsx Running effect, here is the conversion data: ',
+      conversionData,
+    );
+    console.log(
+      'index.tsx Running  effect, here is the activity data: ',
+      activityData,
+    );
     if (conversionData) {
       const fstCurrency = conversionData.currencies.find(
         item => item.currencyCode === 'USD',
@@ -285,7 +302,7 @@ const StartExchange = () => {
 
       setSecondCurrency(sndCurrency);
     }
-    }, [conversionData, setFieldValue, calculateCurrency]);
+  }, [conversionData, setFieldValue, calculateCurrency]);
 
   const switchCurrency = () => {
     const firstCr = firstCurrency;
@@ -307,6 +324,22 @@ const StartExchange = () => {
       dispatch(setHasExpandedExchange(false));
     }
     toggleCollaps();
+  };
+
+  const formatUpdatedDate = dateString => {
+    if (!dateString) return 'Date not available';
+
+    // Create a moment object from the dateString. Assume UTC if needed.
+    const date = moment(dateString);
+
+    // Check if the date is valid
+    if (!date.isValid()) {
+      console.error('Invalid date string:', dateString);
+      return 'Invalid date';
+    }
+
+    // Format the date into a more readable form
+    return date.local().format('MMMM DD, YYYY HH:mm:ss');
   };
 
   return (
@@ -345,8 +378,12 @@ const StartExchange = () => {
                 currency={`${firstCurrency?.currencySymbol} (${firstCurrency?.currencyCode})`}
                 value={values.firstCurrency}
                 flag={firstCurrency?.flag}
-                onBlur={()=> { const formattedValue = formatFinanceNumber(values.firstCurrency);
-                                setFieldValue('firstCurrency', formattedValue);}}
+                onBlur={() => {
+                  const formattedValue = formatFinanceNumber(
+                    values.firstCurrency,
+                  );
+                  setFieldValue('firstCurrency', formattedValue);
+                }}
                 handleCurrency={() => {}}
                 onPress={() => {
                   SheetManager.show('firstSheet');
@@ -362,8 +399,12 @@ const StartExchange = () => {
                 onChangeText={onSecondCurrencyChange}
                 value={values.secondCurrency}
                 flag={secondCurrency?.flag}
-                onBlur={()=> { const formattedValue = formatFinanceNumber(values.secondCurrency);
-                  setFieldValue('secondCurrency', formattedValue);}}
+                onBlur={() => {
+                  const formattedValue = formatFinanceNumber(
+                    values.secondCurrency,
+                  );
+                  setFieldValue('secondCurrency', formattedValue);
+                }}
                 currency={
                   `${secondCurrency?.currencySymbol} (${secondCurrency?.currencyCode})` ||
                   ''
@@ -378,15 +419,12 @@ const StartExchange = () => {
                 touched={touched.secondCurrency}
               />
             </VStack>
-            <Text textAlign={'center'}>
-              1 {firstCurrency?.currencyCode} ={' '}
-              {firstCurrency?.conversionRates[
-                secondCurrency?.currencyCode?.toLowerCase()
-              ]?.toFixed(2)}{' '}
-              {secondCurrency?.currencyCode}{secondCurrency?.currencyCode} 
-              Last updated{secondCurrency?.updatedDate}
-              Updates every 15 seconds
-            </Text>
+            {secondCurrency && (
+              <Text textAlign={'center'}>
+                Last updated: {formatUpdatedDate(secondCurrency?.updatedDate)}{'\n'}
+                {/* Updates every 15 seconds */}
+              </Text>
+            )}
             <GradientButton onPress={handleSubmit} mt={7}>
               Start Exchange
             </GradientButton>

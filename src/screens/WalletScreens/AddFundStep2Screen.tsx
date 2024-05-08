@@ -16,30 +16,30 @@ import { Text } from 'react-native-svg';
 function AddFundStep2Screen() {
   const navigate = useNavigate();
   const params = useRoute().params as ITransectionData & {bankFormData: any};
-  const country = useRoute().params?.selectedCountry;
+  const bankCountry = useRoute().params?.selectedCountry;
   const dispatch = useDispatch();
 
   // Initialize field configuration based on country or other conditions
   const [fieldConfig, setFieldConfig] = useState({
-    accountNumber: country === 'US',
-    confirmAccountNumber: country === 'US',
-    iban: country !== 'US',
-    swift: country !== 'US',
+    accountNumber: bankCountry === 'US',
+    confirmAccountNumber: bankCountry === 'US',
+    iban: bankCountry !== 'US',
+    swift: bankCountry !== 'US',
     bankAddress: true,
-    routingNumber: country === 'US',
+    routingNumber: bankCountry === 'US',
   });
 
   useEffect(() => {
     // Dynamically set the visibility of fields based on country
     setFieldConfig({
-      accountNumber: country === 'US',
-      confirmAccountNumber: country === 'US',
-      iban: country !== 'US',
-      swift: country !== 'US',
+      accountNumber: bankCountry === 'US',
+      confirmAccountNumber: bankCountry === 'US',
+      iban: bankCountry !== 'US',
+      swift: bankCountry !== 'US',
       bankAddress: true,
-      routingNumber: country === 'US',
+      routingNumber: bankCountry === 'US',
     });
-  }, [country]);
+  }, [bankCountry]);
 
   // More specific validation rules
   const validationSchema = yup.object().shape({
@@ -90,6 +90,7 @@ function AddFundStep2Screen() {
             ...params.bankFormData,
             ...values,
           },
+          bankCountry
         });
       } else {
         console.log('Form has validation errors, not submitting');

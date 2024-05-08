@@ -25,7 +25,7 @@ function EditProfileScreen() {
   const [updateProfileFn, {isLoading}] = useUpdateUserProfileMutation();
   const [show, setShow] = React.useState(false);
 
-  console.log(data?.data);
+  // console.log(data?.data);
 
   React.useEffect(() => {
     async function registerAppWithFCM() {
@@ -45,49 +45,55 @@ function EditProfileScreen() {
   const initialValues = {
     firstName: data?.data?.firstName || '',
     lastName: data?.data?.lastName || '',
-    birthDate: data?.data?.birthDay || '',
+    birthDay: data?.data?.birthDay || '',
     email: data?.data?.email || '',
     country: data?.data?.country || '',
     phone: data?.data?.phone || '',
     organization: data?.data?.organizationDescription || '',
   };
 
+  React.useEffect(() => {
+    if (data?.data) {
+      console.log('data', data);
+      formik.setValues(initialValues);
+    }
+  }, [data]);
+
+  const handleSubmit = async () => {
+    try {
+      const result = await updateProfileFn({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        birthDay: values.birthDay,
+        email: values.email,
+        country: values.country,
+        phone: values.phone,
+        organizationDescription: values.organization,
+      }).unwrap();
+
+      console.log('Profile updated successfully:', result);
+      navigation.goBack();
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+      alert(
+        'Failed to update profile: ' + (error.data?.message || 'Unknown error'),
+      );
+    }
+  };
+
   const formik = useFormik({
     initialValues,
-    onSubmit: async value => {
-      try {
-        const data = await updateProfileFn({
-          firstName: value.firstName,
-          lastName: value.lastName,
-          birthDay: value.birthDate,
-          email: value.email,
-          country: value.country,
-          phone: value.phone,
-          organizationDescription: value.organization,
-        }).unwrap();
-        console.log(data);
-        navigation.goBack();
-      } catch (error: any) {
-        alert(error?.data?.message || 'Something went wrong');
-        console.log(error);
-      }
-    },
+    onSubmit: handleSubmit,
+    // onSubmit: handleSubmit(),
     // validationSchema: schema,
   });
 
-  const {
-    values,
-    handleChange,
-    handleBlur,
-    errors,
-    touched,
-    setFieldValue,
-    handleSubmit,
-  } = formik;
+  const {values, handleChange, handleBlur, errors, touched, setFieldValue} =
+    formik;
 
-  const handleToDone = () => {
-    navigation.goBack();
-  };
+  // const handleToDone = () => {
+  //   navigation.goBack();
+  // };
 
   return (
     <KeyboardAwareView>
@@ -106,43 +112,57 @@ function EditProfileScreen() {
         />
         <CustomDatePicker
           title="Birthdate"
-          placeholder="12/27/1995"
-          value={values.birthDate}
-          fieldName="birthDate"
+          placeholder="Select your birthdate"
+          value={values.birthDay}
+          fieldName="birthDay"
           setFieldValue={setFieldValue}
+          mode="date"
         />
         <CustomInput
           title="Email"
           placeholder="name@gmail.com"
           onChangeText={text => setFieldValue('email', text)}
+          value={values.email}
         />
-        <CustomActionsheetList
+        <CustomInput
+          title="Country"
+          placeholder="Select country"
+          onChangeText={text => setFieldValue('country', text)}
+          value={values.country}
+          onPressIn={() => setShow(true)}
+          // touched={() => setShow(true)}
+        />
+        {/* <CustomActionsheetList
           title="Country"
           value={values.country}
-          actionList={moneyList}
-          fieldName="country"
-          handelEvent={setFieldValue}
+          // actionList={moneyList}
+          // fieldName="country"
+          onChange={setFieldValue}
           placeholder="Select country"
-          onPress={() => setShow(true)}
-          fieldValue={values.country}
+          touched={() => setShow(true)}
+          // value={values.country}
           //   value
-        />
+        /> */}
         <CustomInput
           title="Phone"
           placeholder="Enter phone number"
           onChangeText={text => setFieldValue('phone', text)}
+          value={values.phone}
         />
         <CustomInput
           title="Please describe your organization"
           placeholder="Enter description"
           onChangeText={text => setFieldValue('organization', text)}
+          value={values.organization}
         />
         <VStack my="30px">
-          <GradientButton onPress={handleToDone}>Done</GradientButton>
+          <GradientButton onPress={handleSubmit}>Done</GradientButton>
         </VStack>
       </VStack>
       <CountryPicker
         show={show}
+        lang="en"
+        showOnly={['US', 'IL']}
         // when picker button press you will get the country object with dial code
         pickerButtonOnPress={item => {
           //   console.log(item?.name['en']);
@@ -159,7 +179,6 @@ function EditProfileScreen() {
     </KeyboardAwareView>
   );
 }
-
 const editProfileScreen = asRoute(EditProfileScreen, 'editProfileScreen', {
   title: 'Edit Profile',
 });

@@ -26,10 +26,15 @@ import axios from 'axios';
 import {selectUser} from '@store/features/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
+import { replaceUndefinedWithNull } from '@utils/replaceUndefinedWithNull';
+
+interface ITransectionDataWithBank extends ITransectionData {
+  bankCountry?: string;
+}
 
 function AddFundStep3Screen() {
   const navigate = useNavigate();
-  const params = useRoute().params as ITransectionData & {bankFormData: any};
+  const params = useRoute().params as ITransectionDataWithBank & {bankFormData: any};
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
@@ -64,6 +69,7 @@ function AddFundStep3Screen() {
         ...params.bankFormData,
         verificationImageLink,
         verificationStatus: 'Pending',
+        bankCountry: params.bankCountry
       };
 
       const token = await auth().currentUser?.getIdToken(true);
@@ -72,8 +78,8 @@ function AddFundStep3Screen() {
       const username = user?.username;
 
       try {
-
-        const res = await addBankFn(bankForm).unwrap();
+        const bankFormClean = replaceUndefinedWithNull(bankForm);
+        const res = await addBankFn(bankFormClean).unwrap();
         console.log(res);
 
          const type = params?.type;

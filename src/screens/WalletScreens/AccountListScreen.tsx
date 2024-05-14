@@ -22,6 +22,7 @@ function AccountListScreen() {
     page: page,
     limit: 10,
   });
+  console.log('useGetBankAccounts', data);
 
   useEffect(() => {
     refetch(); // This will refetch the data when the component loads

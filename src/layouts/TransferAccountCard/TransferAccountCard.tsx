@@ -8,10 +8,11 @@ export default function TransferAccountCard({
   transferAccountItem,
   ...rest
 }: ITransferAccountCard) {
+  console.log('transferAccountItem', transferAccountItem);
   return (
     <Pressable bg={colors.bg} mb="10px" p="12px" borderRadius="8px" {...rest}>
       <Text color={colors.black} fontWeight={700} fontSize="md">
-        {transferAccountItem.name}
+        {transferAccountItem.name || transferAccountItem.nickname}
       </Text>
       <HStack justifyContent="space-between" mt="5px" mb="2px">
         <Text fontSize="sm" color={colors.gray[0]}>

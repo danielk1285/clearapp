@@ -19,7 +19,7 @@ export const bankAccountsApi = apiSlice.injectEndpoints({
 
           const userInfo = firestore().collection('users').doc(username);
 
-          console.log('userInfo', userInfo);
+          console.log('userInfo index', userInfo);
 
           const userRes = await userInfo.get();
           const userData = userRes.data()?.BankAccounts;
@@ -195,7 +195,7 @@ export const bankAccountsApi = apiSlice.injectEndpoints({
     }),
   }),
 });
-
+console.log('bankAccountsApi', bankAccountsApi);
 export const {
   useGetBankAccountsQuery,
   useGetPaginatedBankAccountsQuery,

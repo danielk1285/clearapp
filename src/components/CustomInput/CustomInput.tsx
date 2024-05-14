@@ -32,7 +32,7 @@ export default function CustomInput({
         <FormControl.ErrorMessage
           mt="1"
           _text={{color: 'red.500', fontSize: 'sm', fontWeight: 400}}>
-          {touched && error ? error : null}
+          {error}
         </FormControl.ErrorMessage>
       </VStack>
     </FormControl>

@@ -43,7 +43,7 @@ function UploadFundInfoScreen() {
   const formik = useFormik({
     initialValues,
     onSubmit: async values => {
-      const {data} = await uploadImageFn({
+      const {url} = await uploadImageFn({
         image: values.imageUri,
         imageName: values.imageName,
         folderName: 'bank',
@@ -53,22 +53,24 @@ function UploadFundInfoScreen() {
 
       // const url = await imageRef.getDownloadURL();
       // console.log({url});
-      console.log({data});
+      console.log('UploadFundInfo url', {url});
       const userId = firebase.auth().currentUser?.uid;
+      console.log('UploadFundInfo userId', {userId});
       try {
-        const uploadFundsData: IAddFunds = {
+        const uploadFundsData: any = {
           action: 'Transfer',
           currency: params.fromCurrency.currencyCode.toUpperCase() as any,
           userId: userId as any,
           amountToSend: params.fromAmount,
           sendingBankRef: params.bankAccount.id,
-          verificationImageLink: data,
+          verificationImageLink: url,
         };
+        console.log('UploadFundInfo uploadFundsData', {uploadFundsData});
         const res = await addFundsFn(uploadFundsData).unwrap();
-        console.log({res});
+        console.log('UploadFundInfo res', {res});
         navigate('dashBoardScreen');
       } catch (error) {
-        console.log({error});
+        console.log('UploadFundError', {error});
       }
     },
     validationSchema: Yup.object().shape({
@@ -147,7 +149,9 @@ function UploadFundInfoScreen() {
           </GradientButton>
           <TextButton onPress={handleToContinue} title="Complete later" />
         </VStack>
-        <LoaderModal isLoading={addFundsRes.isLoading || uploadImageResult.isLoading} />
+        <LoaderModal
+          isLoading={addFundsRes.isLoading || uploadImageResult.isLoading}
+        />
       </VStack>
     </KeyboardAwareView>
   );

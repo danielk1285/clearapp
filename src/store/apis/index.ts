@@ -5,7 +5,7 @@ import {getConverstionRate} from '@utils/getConversionRates';
 
 export const apiSlice = createApi({
   reducerPath: 'apiSlice',
-  baseQuery: fakeBaseQuery({}),
+  baseQuery: fakeBaseQuery(),
   endpoints: builder => ({
     getConversionRates: builder.query({
       async queryFn() {
@@ -90,37 +90,21 @@ export const apiSlice = createApi({
       },
     }),
     insertImage: builder.mutation({
-      async queryFn({
-        image,
-        imageName,
-        folderName = 'images',
-      }: {
-        image: string;
-        imageName: string;
-        folderName?: string;
-      }) {
+      async queryFn({ image, imageName, folderName = 'images' }) {
         try {
           const reference = storage().ref(`${folderName}/${imageName}`);
+          console.log('reference', reference);
           await reference.putFile(image);
           const url = await reference.getDownloadURL();
-          return {
-            data: {
-              status: 200,
-              message: 'Image uploaded successfully',
-              data: url,
-            },
-          };
+          console.log('image url', url);
+          return { data: { status: 200, message: 'Image uploaded successfully', url } };
         } catch (error) {
-          return {
-            data: {
-              status: 500,
-              message: 'Internal server error',
-              error,
-            },
-          };
+          console.log(error);
+          return { error: { status: 500, message: 'Internal server error', data: error } };
         }
       },
     }),
+    
   }),
   tagTypes: ['getProfileDetails'],
 });

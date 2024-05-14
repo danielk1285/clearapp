@@ -70,7 +70,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs access to your camera</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>$(PRODUCT_NAME) needs access to scan your face</string>
+	<string>This app requires Face ID to secure access</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) needs access to your photo library</string>
 	<key>UIAppFonts</key>

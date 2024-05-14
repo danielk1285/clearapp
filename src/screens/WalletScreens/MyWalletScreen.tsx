@@ -23,13 +23,7 @@ import {IBankAccountData} from '@typedef/common.types';
 function MyWalletScreen() {
   const navigate = useNavigate();
 
-  const handleActionSelected = (action: string, currency?: string) => {
-    if (action === 'Start Withdraw') {
-      navigate('withdrawScreen');
-    } else {
-      navigate('exchangeScreen', { currency });
-    }
-  };
+
 
   const hasViewedTutorial = useSelector(selectHasViewedTutorials);
   const dispatch = useDispatch();
@@ -44,6 +38,15 @@ function MyWalletScreen() {
       page: 1,
       limit: 5,
     });
+    console.log('bankAccountsData', bankAccountsData);
+
+    const handleActionSelected = (action: string, currency?: string) => {
+      if (action === 'Start Withdraw') {
+        navigate('withdrawScreen', { selectedWallet });
+      } else {
+        navigate('exchangeScreen', { currency });
+      }
+    };
 
   const handleAddAccount = () => {
     navigate('addFundStep1Screen', {
@@ -66,7 +69,7 @@ function MyWalletScreen() {
     navigate('accountListScreen');
   };
 
-  const bankaccounts = bankAccountsData as IBankAccountData[];
+  const bankaccounts = bankAccountsData?.length > 0 ? bankAccountsData as IBankAccountData[] : [];
 
   console.log(bankaccounts);
 

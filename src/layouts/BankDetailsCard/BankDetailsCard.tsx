@@ -1,5 +1,5 @@
 import {CopyIcon, ShareIcon} from '@assets/svg/icons';
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import colors from '@theme/colors';
 import {Box, HStack, Pressable, Text, VStack, useToast} from 'native-base';
 import React from 'react';

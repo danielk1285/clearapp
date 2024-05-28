@@ -76,11 +76,14 @@ function AddFundStep3Screen() {
       const fcmToken = await AsyncStorage.getItem('pushToken');
       const uid = auth().currentUser?.uid;
       const username = user?.username;
+      console.log('username', username);
 
       try {
         const bankFormClean = replaceUndefinedWithNull(bankForm);
+        console.log('bankFormClean', bankFormClean);
         const res = await addBankFn(bankFormClean).unwrap();
-        console.log(res);
+        
+        console.log('addBankFn', res);
 
          const type = params?.type;
          const newParams = { ...params, key: Date.now() };

@@ -5,6 +5,7 @@ import React from 'react';
 
 const authScreens = {
   onBoardingScreen,
+  FaceID
 };
 
 const authRoute: IReactNavigationRouteConfig = {

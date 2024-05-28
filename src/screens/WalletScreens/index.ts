@@ -9,4 +9,4 @@ export { default as withdrawScreen } from './WithdrawScreen';
 export { default as addFundStep1Screen } from './AddFundStep1Screen';
 export { default as addFundStep2Screen } from './AddFundStep2Screen';
 export { default as addFundStep3Screen } from './AddFundStep3Screen';
-
+export { default as transactionFailedRoute } from './SomethingWentWrong';

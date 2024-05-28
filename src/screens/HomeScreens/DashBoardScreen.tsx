@@ -5,13 +5,16 @@ import ExchangeNowCard from '@sections/DashBoardSectons/ExchangeNowCard/Exchange
 import StartExchange from '@sections/DashBoardSectons/StartExchange';
 import asRoute from 'hoc/asRoute';
 import {ScrollView, VStack} from 'native-base';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import auth, {firebase} from '@react-native-firebase/auth';
 import {useSelector} from 'react-redux';
 import {selectUser} from '@store/features/user';
 import {useGetUserActivityQuery} from '@store/apis/userActivitiesApi';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+import {FaceID} from '@screens/AuthScreens/FaceID';
+import localStorage from 'redux-persist/es/storage';
+
 /*export const activityData = [
   {
     id: 1,
@@ -58,12 +61,26 @@ import { useNavigation } from '@react-navigation/native';
 ];
 */
 
-
 function DashBoardScreen() {
   //const [activityList, setActivityList] = useState(activityData);
   const user = useSelector(selectUser);
-  const {data: activityData, isLoading: activityIsLoading} = useGetUserActivityQuery(undefined);
+  const {data: activityData, isLoading: activityIsLoading} =
+    useGetUserActivityQuery(undefined);
+  const [alreadyAuthenticated, setAlreadyAuthenticated] = useState(false);
   console.log(activityData, activityIsLoading);
+
+  const [faceIDEnabled, setFaceIDEnabled] = useState(false);
+
+  useEffect(() => {
+    localStorage.getItem('securityList').then(value => {
+      if (value) {
+        const settings = JSON.parse(value);
+        if (settings.includes('Face ID')) {
+          setFaceIDEnabled(true);
+        }
+      }
+    });
+  }, []);
 
   const [currentUser, setCurrentUser] = useState({
     name: '',
@@ -82,7 +99,7 @@ function DashBoardScreen() {
   };
 
   React.useEffect(() => {
-    console.log("Dashboardscreen tsx");
+    console.log('Dashboardscreen tsx');
 
     const userData = auth().currentUser;
     if (userData) {
@@ -97,7 +114,12 @@ function DashBoardScreen() {
     }
   }, [activityData, activityIsLoading]);
 
-  return (
+  return faceIDEnabled && !alreadyAuthenticated ? (
+    <FaceID
+      faceIDAuth={alreadyAuthenticated}
+      setFaceIDAuth={success => setAlreadyAuthenticated(success)}
+    />
+  ) : (
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}

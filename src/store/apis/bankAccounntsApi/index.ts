@@ -96,14 +96,15 @@ export const bankAccountsApi = apiSlice.injectEndpoints({
         bankName,
         branchNumber,
         iban,
-        nickname,
-        preferredCurrency,
+        // nickname,
+        // preferredCurrency,
         routingNumber,
         swift,
         verificationImageLink,
       }: IBankAccount) => {
         try {
           const userName = auth().currentUser?.uid;
+          console.log('userName addBankFn', userName);
           const bankAccData = {
             id: uuid.v4(),
             date: new Date(),
@@ -114,8 +115,8 @@ export const bankAccountsApi = apiSlice.injectEndpoints({
             bankName,
             //branchNumber,
             iban,
-            nickname,
-            preferredCurrency,
+            // nickname,
+            // preferredCurrency,
             routingNumber,
             swift,
             verificationImageLink,
@@ -128,6 +129,9 @@ export const bankAccountsApi = apiSlice.injectEndpoints({
             .get();
 
           const userObject = userDoc.data();
+
+          console.log('userObject', userObject);
+          
 
           const usersBankAccounts = userObject?.BankAccounts || [];
           

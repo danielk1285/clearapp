@@ -216,7 +216,7 @@ const StartExchange = () => {
     (value: string, nextCurrency: string) => {
       const floatValue = parseFloat(value.replace(/,/g, ''));
       let secondCurrencyValue = Number(floatValue) / parseFloat(nextCurrency);
-      return secondCurrencyValue.toFixed(2) + '';
+      return secondCurrencyValue.toFixed(4) + '';
     },
     [],
   );
@@ -419,12 +419,6 @@ const StartExchange = () => {
                 touched={touched.secondCurrency}
               />
             </VStack>
-            {secondCurrency && (
-              <Text textAlign={'center'}>
-                Last updated: {formatUpdatedDate(secondCurrency?.updatedDate)}{'\n'}
-                {/* Updates every 15 seconds */}
-              </Text>
-            )}
             <GradientButton onPress={handleSubmit} mt={7}>
               Start Exchange
             </GradientButton>

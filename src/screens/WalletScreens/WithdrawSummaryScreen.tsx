@@ -5,16 +5,41 @@ import ExchangeSummaryCard from '@layouts/ExchangeSummaryCard/ExchangeSummaryCar
 import KeyboardAwareView from '@layouts/KeyboardAwareView/KeyboardAwareView';
 import WithdrawSummaryCard from '@layouts/WithdrawSummaryCard/WithdrawSummaryCard';
 import { useRoute } from '@react-navigation/native';
+import { useInitiateWithdrawalMutation } from '@store/avpiV2/userApiSlice';
+import auth from '@react-native-firebase/auth';
 import asRoute from 'hoc/asRoute';
 import { VStack } from 'native-base';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function WithdrawSummaryScreen() {
     const navigate = useNavigate();
-    const { currency, amount, transferTo } = useRoute().params as any;
+
+    const userId = auth().currentUser?.uid;
+    // const { currency, amount, transferTo } = useRoute().params as any;
+    const params = useRoute().params as { currency: string, amount: string, transferTo: string };
+
+    const [initiateWithdrawal, WithdrawalResult] = useInitiateWithdrawalMutation();
+
+    const { currency, amount, transferTo } = params;
+    
+    useEffect(() => {
+        // Check the result of the mutation
+        if (WithdrawalResult.isSuccess) {
+            console.log('Withdrawal Successful');
+            navigate('withdrawProgressScreen');
+        } else if (WithdrawalResult.isError) {
+            console.error('Withdrawal Failed:', WithdrawalResult.error);
+        }
+    }, [WithdrawalResult, navigate]);
 
     const handleToWithdraw = () => {
-        navigate('withdrawProgressScreen');
+        // Make sure to parse the amount as a float
+        initiateWithdrawal({
+            uid: userId,
+            amount: parseFloat(amount),
+            currency,
+            transferTo,
+        });
     };
     return (
         <KeyboardAwareView>

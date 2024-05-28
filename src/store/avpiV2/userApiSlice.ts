@@ -20,6 +20,17 @@ const newApiV2 = apiV2Slice.injectEndpoints({
         );
       },
     }),
+    initiateWithdrawal: builder.mutation({
+      query: body => {
+        console.log('Sending withdrawal request with body:', body);
+        return {
+          url: 'initiateWithdrawal',
+          method: 'POST',
+          body: body,
+        };
+      },
+    }),
+    
     handleTransactionsds: builder.mutation({
       query: body => ({
         url: 'addTransferRequest',
@@ -30,5 +41,5 @@ const newApiV2 = apiV2Slice.injectEndpoints({
   }),
 });
 
-export const {useCreateOrUpdateUserMutation, useHandleTransactionsdsMutation} =
+export const {useCreateOrUpdateUserMutation, useHandleTransactionsdsMutation, useInitiateWithdrawalMutation} =
   newApiV2;

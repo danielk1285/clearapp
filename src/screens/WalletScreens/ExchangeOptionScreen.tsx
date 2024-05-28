@@ -37,7 +37,8 @@ function ExchangeOptionScreen() {
       const {data} = await exchangeFunds(exchangeRequest).unwrap();
       navigate('exchangeSummaryScreen',params);
     } catch (error) {
-      Alert.alert('Error', 'Something went wrong');
+      // Alert.alert('Error', 'Something went wrong');
+      navigate('transactionFailedRoute');
       console.log(error);
     }
   };

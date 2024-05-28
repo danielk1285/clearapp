@@ -173,7 +173,7 @@ function DetailScreen() {
       );
 
       const secondValue = calculateCurrency(
-        '50,000',
+        '50,000.0000',
         sndCurrency?.conversionRates[fstCurrency?.currencyCode?.toLowerCase()],
       );
 
@@ -203,7 +203,7 @@ function DetailScreen() {
       );
 
       const secondValue = calculateCurrency(
-        '50,000',
+        '50,000.0000',
         sndCurrency?.conversionRates[fstCurrency?.currencyCode?.toLowerCase()],
       );
 

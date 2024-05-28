@@ -38,12 +38,18 @@ function WithdrawScreen() {
   useEffect(() => {
     refetch(); // This will refetch the data when the component loads
   }, [params?.key]);
-  const handleClickOnAccountItem = ({
-    transferAccountItem,
-  }: ITransferAccountCard) => {
-    const {currency, amount, name} = transferAccountItem;
-    navigate('withdrawSummaryScreen', {currency, amount, transferTo: name});
+  
+  const handleClickOnAccountItem = ({ transferAccountItem }: ITransferAccountCard) => {
+    console.log('transferAccountItem', transferAccountItem);
+    const { preferredCurrency: currency, id: amount, nickname: transferTo } = transferAccountItem;
+    if (!insufficientBalance) {
+      navigate('withdrawSummaryScreen', { currency, amount, transferTo });
+    } else {
+      // Optionally handle insufficient balance case here, maybe display a message.
+      console.log('Insufficient balance for the transaction');
+    }
   };
+  
 
   const handleAddNewAccount = () => {
     navigate('addNewAccountScreen');
@@ -56,7 +62,7 @@ function WithdrawScreen() {
 
   const insufficientBalance =
     !availableBalance || availableBalance < transactionAmount;
-    console.log('insufficientBalance', insufficientBalance);
+  console.log('insufficientBalance', insufficientBalance);
   return (
     <KeyboardAwareView>
       <VStack px="20px">
@@ -77,9 +83,11 @@ function WithdrawScreen() {
               key={index}
             />
           ))}
-          {insufficientBalance && <Text color={'#cc0000'} variant="h2" my="10px">
-            Insufficient balance
-            </Text>}
+          {insufficientBalance && (
+            <Text color={'#cc0000'} variant="h2" my="10px">
+              Insufficient balance
+            </Text>
+          )}
           <TextButton
             onPress={handleAddNewAccount}
             my="10px"

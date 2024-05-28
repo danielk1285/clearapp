@@ -38,6 +38,7 @@ import {
   personalDetails,
 } from '@screens/HomeScreens/index';
 import asRoute from 'hoc/asRoute';
+import transactionFailedRoute from '@screens/WalletScreens/SomethingWentWrong';
 
 const walletScreens = {
   accountListScreen,
@@ -51,6 +52,7 @@ const walletScreens = {
   addFundStep2Screen,
   addFundStep3Screen,
   personalDetails,
+  transactionFailedRoute,
 };
 
 const profileScreens = {

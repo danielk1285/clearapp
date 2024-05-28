@@ -9,6 +9,8 @@ import asRoute from 'hoc/asRoute';
 import {VStack, useDisclose} from 'native-base';
 import React, {useState} from 'react';
 import auth from '@react-native-firebase/auth';
+import { Alert, Linking, Text } from 'react-native';
+import { set } from 'lodash';
 
 function ProfileScreen() {
   const {onClose, onOpen, isOpen} = useDisclose();
@@ -20,6 +22,7 @@ function ProfileScreen() {
     gmail: '',
     profilePic: '',
   });
+  const [whatsappError, setWhatsappError] = useState(false);
 
   React.useEffect(() => {
     const userData = auth().currentUser;
@@ -38,10 +41,27 @@ function ProfileScreen() {
     if (route) {
       navigate(route);
     }
-    if (index + 1 === settingsData?.length) {
+    if (index + 2 === settingsData?.length) {
+      console.log('help and support');
+      openWhatsApp();  // This will open WhatsApp to the specified number
+    }
+    
+    else if (index + 1 === settingsData?.length) {
       onOpen();
     }
   };
+
+  const openWhatsApp = async () => {
+    try {
+    let url = 'whatsapp://send?phone=18082659720';
+      Linking.openURL(url);
+  } catch (error) {
+    console.log('An error occurred', error);
+    Alert.alert('Error', 'WhatsApp is not installed');
+    setWhatsappError(true);
+  }
+  };
+  
 
   const handleLogout = () => {
     console.log('logged out');
@@ -69,6 +89,7 @@ function ProfileScreen() {
               key={index}
             />
           ))}
+          <Text>Please install WhatsApp</Text>
         </VStack>
       </VStack>
       <ActionsheetModal onClose={onClose} isOpen={isOpen}>

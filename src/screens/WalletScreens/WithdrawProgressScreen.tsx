@@ -30,7 +30,7 @@ function WithdrawProgressScreen() {
                     </Text>
                 </VStack>
                 <GradientButton mt="20px" onPress={handleToWithdraw}>
-                    Withdraw
+                    Done
                 </GradientButton>
             </VStack>
         </KeyboardAwareView>

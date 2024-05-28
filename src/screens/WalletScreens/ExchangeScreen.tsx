@@ -184,7 +184,7 @@ function ExchangeScreen() {
       const sndCurrency = currency ? filteredSecondCurrency : secndCurrency;
 
       const secondValue = calculateCurrency(
-        '50,000',
+        '50,000.0000',
         sndCurrency?.conversionRates[fstCurrency?.currencyCode?.toLowerCase()],
       );
 
